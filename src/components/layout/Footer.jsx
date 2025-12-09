@@ -1,78 +1,72 @@
 'use client';
+import { IMAGE_PATHS, SOCIAL_LINKS } from '@/lib/constants';
+import { motion } from 'framer-motion';
+import { ArrowUp, Facebook, Instagram, Mail, Twitter } from 'lucide-react';
 import Image from 'next/image';
-import { Facebook, Twitter, Instagram, Mail } from 'lucide-react';
-import { IMAGE_PATHS, SOCIAL_LINKS, SITE_CONFIG } from '@/lib/constants';
+
+const SocialIcon = ({ href, Icon, delay }) => (
+  <motion.a
+    href={href}
+    target="_blank"
+    initial={{ opacity: 0, scale: 0 }}
+    whileInView={{ opacity: 1, scale: 1 }}
+    transition={{ delay }}
+    whileHover={{ y: -5, backgroundColor: '#9b87fe' }}
+    className="flex h-10 w-10 items-center justify-center rounded-full bg-white/5 border border-white/10 text-white transition-colors"
+  >
+    <Icon size={18} />
+  </motion.a>
+);
 
 export default function Footer() {
+  const scrollToTop = () => window.scrollTo({ top: 0, behavior: 'smooth' });
+
   return (
-    <footer className="relative bg-[#0B1843] border-t border-white/10 py-12">
-      <div className="container-custom">
-        <div className="grid grid-cols-1 md:grid-cols-2 gap-8 items-center">
-          {/* Logo & Brand */}
-          <div className="flex items-center gap-4">
-            <Image
-              src={IMAGE_PATHS.logo}
-              alt="GeekHaven Logo"
-              width={70}
-              height={70}
-            />
-            <div>
+    <footer className="relative border-t border-white/10 pt-16 pb-8 overflow-hidden bg-transparent">
+      <div className="container-custom relative z-10">
+        <div className="grid gap-10 md:grid-cols-2 lg:items-end">
+          <div className="space-y-4">
+            <div className="flex items-center gap-3">
+              <Image src={IMAGE_PATHS.logo} alt="Logo" width={50} height={50} />
               <Image
                 src={IMAGE_PATHS.logoText}
-                alt="OpenCode 25"
-                width={150}
-                height={50}
-                className="mb-2"
+                alt="Text"
+                width={120}
+                height={35}
               />
-              <p className="text-gray-400 text-sm">Code of Conduct</p>
             </div>
+            <p className="text-xs text-gray-400">Open Source. Open Minds.</p>
           </div>
-
-          {/* Social Links */}
-          <div className="text-center md:text-right">
-            <p className="text-white font-semibold text-lg mb-4">
-              Follow Us On
-            </p>
-            <div className="flex gap-6 justify-center md:justify-end">
-              <a
+          <div className="flex flex-col gap-4 md:items-end">
+            <div className="flex gap-3">
+              <SocialIcon
                 href={SOCIAL_LINKS.twitter}
-                target="_blank"
-                rel="noopener noreferrer"
-                className="text-white hover:text-[#9B87FE] transition-colors"
-              >
-                <Twitter size={28} />
-              </a>
-              <a
+                Icon={Twitter}
+                delay={0.1}
+              />
+              <SocialIcon
                 href={SOCIAL_LINKS.facebook}
-                target="_blank"
-                rel="noopener noreferrer"
-                className="text-white hover:text-[#9B87FE] transition-colors"
-              >
-                <Facebook size={28} />
-              </a>
-              <a
+                Icon={Facebook}
+                delay={0.2}
+              />
+              <SocialIcon
                 href={SOCIAL_LINKS.instagram}
-                target="_blank"
-                rel="noopener noreferrer"
-                className="text-white hover:text-[#9B87FE] transition-colors"
-              >
-                <Instagram size={28} />
-              </a>
-              <a
+                Icon={Instagram}
+                delay={0.3}
+              />
+              <SocialIcon
                 href="mailto:geekhaven@iiita.ac.in"
-                className="text-white hover:text-[#9B87FE] transition-colors"
-              >
-                <Mail size={28} />
-              </a>
+                Icon={Mail}
+                delay={0.4}
+              />
             </div>
+            <button
+              onClick={scrollToTop}
+              className="flex items-center gap-2 text-xs font-medium text-gray-400 hover:text-white"
+            >
+              Back to top <ArrowUp size={12} />
+            </button>
           </div>
-        </div>
-
-        <div className="mt-8 pt-6 border-t border-white/10 text-center">
-          <p className="text-gray-400">
-            © Copyright{' '}
-            <span className="font-semibold text-white">• Team GeekHaven</span>
-          </p>
         </div>
       </div>
     </footer>

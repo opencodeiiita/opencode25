@@ -1,103 +1,90 @@
 'use client';
-import { useState, useEffect } from 'react';
-import Image from 'next/image';
-import { Menu, X } from 'lucide-react';
 import { IMAGE_PATHS } from '@/lib/constants';
 import { useStore } from '@/store/useStore';
+import {
+  AnimatePresence,
+  motion,
+  useMotionValueEvent,
+  useScroll,
+} from 'framer-motion';
+import { Menu } from 'lucide-react';
+import Image from 'next/image';
+import { useState } from 'react';
+import MobileMenu from './MobileMenu';
+import Navbar from './Navbar';
 
 export default function Header() {
-  const [scrolled, setScrolled] = useState(false);
   const { isMobileMenuOpen, toggleMobileMenu, closeMobileMenu } = useStore();
+  const [hidden, setHidden] = useState(false);
+  const [scrolled, setScrolled] = useState(false);
+  const { scrollY } = useScroll();
 
-  useEffect(() => {
-    const handleScroll = () => {
-      setScrolled(window.scrollY > 50);
-    };
-    window.addEventListener('scroll', handleScroll);
-    return () => window.removeEventListener('scroll', handleScroll);
-  }, []);
+  useMotionValueEvent(scrollY, 'change', (latest) => {
+    const previous = scrollY.getPrevious();
+    if (latest > previous && latest > 150) setHidden(true);
+    else setHidden(false);
+    setScrolled(latest > 50);
+  });
 
   const scrollToSection = (id) => {
     const element = document.getElementById(id);
     if (element) {
-      element.scrollIntoView({ behavior: 'smooth' });
+      const offset = 80;
+      const elementPosition =
+        element.getBoundingClientRect().top + window.scrollY;
+      window.scrollTo({ top: elementPosition - offset, behavior: 'smooth' });
       closeMobileMenu();
     }
   };
 
   return (
-    <header
-      className={`fixed top-0 left-0 right-0 z-50 transition-all duration-300 ${
-        scrolled
-          ? 'bg-[#0B1843]/95 backdrop-blur-lg shadow-lg'
-          : 'bg-transparent'
-      }`}
-    >
-      <div className="container-custom py-4">
-        <div className="flex items-center justify-between">
-          <div className="flex items-center gap-4">
+    <>
+      <motion.header
+        variants={{ visible: { y: 0 }, hidden: { y: '-100%' } }}
+        animate={hidden ? 'hidden' : 'visible'}
+        transition={{ duration: 0.35 }}
+        className={`fixed top-0 left-0 right-0 z-40 flex h-20 items-center transition-all duration-300 ${
+          scrolled
+            ? 'bg-[#0B1843]/80 backdrop-blur-md border-b border-white/5'
+            : 'bg-transparent'
+        }`}
+      >
+        <div className="container-custom flex items-center justify-between w-full">
+          <div
+            className="flex items-center gap-4 cursor-pointer group shrink-0"
+            onClick={() => scrollToSection('hero')}
+          >
             <Image
               src={IMAGE_PATHS.logoRb}
-              alt="OpenCode Logo"
-              width={70}
-              height={70}
-              className="cursor-pointer"
-              onClick={() => scrollToSection('hero')}
+              alt="Logo"
+              width={50}
+              height={50}
+              className="object-contain"
             />
             <Image
               src={IMAGE_PATHS.logoText}
-              alt="OpenCode 25"
-              width={150}
-              height={50}
+              alt="Text"
+              width={140}
+              height={40}
               className="hidden sm:block"
             />
           </div>
 
-          {/* Desktop Menu */}
-          <nav className="hidden md:flex items-center gap-8">
-            {['How It Works', 'Projects', 'Testimonials', 'Sponsors'].map(
-              (item) => (
-                <button
-                  key={item}
-                  onClick={() =>
-                    scrollToSection(item.toLowerCase().replace(/\s+/g, '-'))
-                  }
-                  className="text-white hover:text-[#9B87FE] transition-colors font-medium"
-                >
-                  {item}
-                </button>
-              )
-            )}
-          </nav>
+          <Navbar onNavigate={scrollToSection} />
 
-          {/* Mobile Menu Button */}
           <button
             onClick={toggleMobileMenu}
-            className="md:hidden text-white p-2"
+            className="md:hidden rounded-full bg-white/5 p-2 text-white"
           >
-            {isMobileMenuOpen ? <X size={28} /> : <Menu size={28} />}
+            <Menu size={24} />
           </button>
         </div>
-
-        {/* Mobile Menu */}
+      </motion.header>
+      <AnimatePresence>
         {isMobileMenuOpen && (
-          <nav className="md:hidden mt-4 pb-4 flex flex-col gap-4">
-            {['How It Works', 'Projects', 'Testimonials', 'Sponsors'].map(
-              (item) => (
-                <button
-                  key={item}
-                  onClick={() =>
-                    scrollToSection(item.toLowerCase().replace(/\s+/g, '-'))
-                  }
-                  className="text-white hover:text-[#9B87FE] transition-colors font-medium text-left"
-                >
-                  {item}
-                </button>
-              )
-            )}
-          </nav>
+          <MobileMenu onClose={closeMobileMenu} onNavigate={scrollToSection} />
         )}
-      </div>
-    </header>
+      </AnimatePresence>
+    </>
   );
 }
