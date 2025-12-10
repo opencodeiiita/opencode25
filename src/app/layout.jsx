@@ -1,4 +1,3 @@
-import SmoothScroll from '@/components/layout/SmoothScroll';
 import ScrollProgress from '@/components/ui/ScrollProgress';
 import ScrollSpaceship from '@/components/ui/ScrollSpaceship';
 import { SITE_CONFIG } from '@/lib/constants';
@@ -31,7 +30,7 @@ export default function RootLayout({ children }) {
       <body
         className={`${poppins.variable} font-poppins antialiased bg-[#0B1843] text-white overflow-x-hidden selection:bg-[#9b87fe] selection:text-white`}
       >
-        <SmoothScroll>{children}</SmoothScroll>
+        {children}
         <ScrollSpaceship />
         <ScrollProgress />
       </body>
