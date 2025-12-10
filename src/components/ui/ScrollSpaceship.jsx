@@ -13,74 +13,65 @@ import { useState } from 'react';
 export default function ScrollSpaceship() {
   const { scrollYProgress, scrollY } = useScroll();
   const scrollVelocity = useVelocity(scrollY);
-  const [direction, setDirection] = useState(1); // 1 = down, -1 = up
+  const [direction, setDirection] = useState(1);
   const [isMoving, setIsMoving] = useState(false);
 
-  // 1. Smooth Physics for Position
   const smoothProgress = useSpring(scrollYProgress, {
     stiffness: 100,
     damping: 30,
     restDelta: 0.001,
   });
 
-  // 2. Map Progress to Screen Height (10% to 90%)
-  const yPosition = useTransform(smoothProgress, [0, 1], ['5vh', '85vh']);
+  const yPosition = useTransform(smoothProgress, [0, 1], ['8vh', '85vh']);
 
-  // 3. Detect Scroll Direction & Movement
   useMotionValueEvent(scrollY, 'change', (latest) => {
     const previous = scrollY.getPrevious();
-    if (latest > previous) {
-      setDirection(1); // Moving Down
-    } else {
-      setDirection(-1); // Moving Up
-    }
+    setDirection(latest > previous ? 1 : -1);
 
-    // Check velocity to determine if moving
-    const velocity = scrollVelocity.get();
-    setIsMoving(Math.abs(velocity) > 5);
+    const velocity = Math.abs(scrollVelocity.get());
+    setIsMoving(velocity > 10);
   });
 
-  // 4. Warp Speed Effect (Stretch based on speed)
-  const skew = useTransform(scrollVelocity, [-1000, 1000], [-10, 10]);
-  const scaleY = useTransform(scrollVelocity, [-1000, 0, 1000], [1.2, 1, 1.2]);
+  const skew = useTransform(scrollVelocity, [-1000, 1000], [-8, 8]);
+  const scaleY = useTransform(
+    scrollVelocity,
+    [-1000, 0, 1000],
+    [1.15, 1, 1.15]
+  );
 
   return (
-    <div className="fixed right-4 top-0 bottom-0 w-12 z-40 hidden lg:flex items-start justify-center pointer-events-none">
-      {/* The Track Line */}
+    <div className="fixed right-6 top-0 bottom-0 w-12 z-40 hidden lg:flex items-start justify-center pointer-events-none">
       <div className="absolute top-0 bottom-0 w-px bg-gradient-to-b from-transparent via-white/10 to-transparent dashed-line" />
 
-      {/* The Spaceship Container */}
       <motion.div style={{ y: yPosition }} className="relative z-10">
         <motion.div
-          animate={{ rotate: direction === 1 ? 180 : 0 }} // Rotate based on direction
-          style={{ skewY: skew, scaleY: scaleY }} // Warp physics
+          animate={{ rotate: direction === 1 ? 180 : 0 }}
+          style={{ skewY: skew, scaleY: scaleY }}
           transition={{ type: 'spring', stiffness: 200, damping: 20 }}
-          className="relative flex flex-col items-center"
+          className="relative flex flex-col items-center will-change-transform"
         >
-          {/* Rocket Body */}
-          <div className="relative z-20 bg-[#0B1843] p-2 rounded-full border border-white/20 shadow-[0_0_15px_rgba(155,135,254,0.5)]">
-            <Rocket size={24} className="text-[#9b87fe] fill-[#9b87fe]/20" />
+          <div className="relative z-20 bg-gradient-to-br from-[#0B1843] to-[#1a2654] p-2.5 rounded-full border border-white/20 shadow-[0_0_20px_rgba(155,135,254,0.6)]">
+            <Rocket size={24} className="text-[#9B87FE] fill-[#9B87FE]/30" />
           </div>
 
-          {/* Engine Flame (Animated) */}
           <motion.div
             animate={{
-              height: isMoving ? [10, 25, 10] : [5, 8, 5],
-              opacity: isMoving ? 1 : 0.6,
+              height: isMoving ? [12, 28, 12] : [6, 10, 6],
+              opacity: isMoving ? [0.8, 1, 0.8] : [0.4, 0.6, 0.4],
             }}
-            transition={{ duration: 0.2, repeat: Infinity }}
-            className={`absolute w-2 rounded-full bg-gradient-to-b from-orange-400 to-red-600 blur-[2px] -z-10 ${
-              direction === 1 ? '-top-4 rotate-180' : '-bottom-4'
+            transition={{ duration: 0.15, repeat: Infinity, ease: 'easeInOut' }}
+            className={`absolute w-2.5 rounded-full bg-gradient-to-b from-orange-400 via-red-500 to-red-600 blur-[3px] shadow-[0_0_15px_rgba(255,100,0,0.8)] -z-10 ${
+              direction === 1 ? '-top-5 rotate-180' : '-bottom-5'
             }`}
           />
 
-          {/* Blue Thruster Glow */}
           <motion.div
             animate={{
-              scale: isMoving ? 1.5 : 1,
-              opacity: isMoving ? 0.8 : 0.4,
+              scale: isMoving ? [1, 1.6, 1] : [1, 1.2, 1],
+              opacity: isMoving ? [0.6, 0.9, 0.6] : [0.3, 0.5, 0.3],
             }}
-            className="absolute inset-0 bg-[#9b87fe] blur-xl -z-20 rounded-full"
+            transition={{ duration: 0.2, repeat: Infinity }}
+            className="absolute inset-0 bg-[#9B87FE] blur-xl -z-20 rounded-full"
           />
         </motion.div>
       </motion.div>

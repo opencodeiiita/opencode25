@@ -1,33 +1,30 @@
-// Site Constants
 export const SITE_CONFIG = {
-  name: process.env.NEXT_PUBLIC_SITE_NAME || "OpenCode'25",
+  name: "OpenCode'25",
   description:
-    process.env.NEXT_PUBLIC_SITE_DESCRIPTION || 'Open Source Hackathon',
-  tagline:
-    process.env.NEXT_PUBLIC_SITE_TAGLINE || 'Code. Collaborate. Contribute.',
-  url: process.env.NEXT_PUBLIC_SITE_URL || 'https://opencode.in',
-  orgName: process.env.NEXT_PUBLIC_ORG_NAME || 'OpenCode',
-  year: process.env.NEXT_PUBLIC_ORG_YEAR || '2025',
-  eventMonth: process.env.NEXT_PUBLIC_EVENT_MONTH || 'February',
+    'A month-long program starting in December for students to start their journey in the world of open source',
+  tagline: 'Your journey into open source starts here',
+  url: 'https://opencodeiiita.github.io',
+  orgName: 'GeekHaven IIITA',
+  year: '2025',
+  eventMonth: 'December',
 };
 
-// External Links
 export const EXTERNAL_LINKS = {
-  unstop: process.env.NEXT_PUBLIC_UNSTOP_URL || '',
-  githubOrg: process.env.NEXT_PUBLIC_GITHUB_ORG_URL || '',
-  discord: process.env.NEXT_PUBLIC_DISCORD_URL || '',
-  codeOfConduct: process.env.NEXT_PUBLIC_CODE_OF_CONDUCT_URL || '',
+  unstop:
+    'https://unstop.com/college-fests/opencode-indian-institute-of-information-technology-allahabad-294613',
+  githubOrg: 'https://github.com/orgs/opencodeiiita/repositories',
+  discord: 'https://discord.gg/PX7uJCSXPw',
+  codeOfConduct:
+    'https://drive.google.com/file/d/1LQJai-gcyf6AvzlW06aw7WJ8qZUpwN4P/view?usp=sharing',
 };
 
-// Social Media Links
 export const SOCIAL_LINKS = {
-  twitter: process.env.NEXT_PUBLIC_TWITTER_URL || '',
-  facebook: process.env.NEXT_PUBLIC_FACEBOOK_URL || '',
-  instagram: process.env.NEXT_PUBLIC_INSTAGRAM_URL || '',
-  linkedin: process.env.NEXT_PUBLIC_LINKEDIN_URL || '',
+  twitter: 'https://twitter.com/geekhaveniiita',
+  facebook: 'https://www.facebook.com/geekhaveniiita',
+  instagram: 'https://www.instagram.com/geekhaven_iiita/',
+  linkedin: 'https://www.linkedin.com/company/geekhaven',
 };
 
-// Image Paths
 export const IMAGE_PATHS = {
   logo: '/images/logo.png',
   logoRb: '/images/logo_rb-min.png',
@@ -36,14 +33,13 @@ export const IMAGE_PATHS = {
   favicon: '/images/opencode2024.png',
 };
 
-// How It Works Steps
 export const HOW_IT_WORKS_STEPS = [
   {
     id: 1,
     number: '1',
     title: 'Claim Issue',
     description:
-      "It doesn't matter whether you know how to solve it. Don't look out for issues you know how to solve, but rather the ones you don't know how to solve! This will be your door to learning something new.",
+      "It doesn't matter whether you know how to solve it. Don't look out for issues you know how to solve, but rather to the ones you don't know how to solve! This will be your opening door to learning something new.",
     color: 'rgb(200, 180, 213)',
   },
   {
@@ -51,7 +47,7 @@ export const HOW_IT_WORKS_STEPS = [
     number: '2',
     title: 'Solve Issue',
     description:
-      'After claiming the issue, explore ways on how to proceed. Mentors and Google will be your rescue here.',
+      "After claiming the issue, now it's the time to explore ways on how to proceed. Mentors and Google will be to your rescue here. Take advantage of both to the most.",
     color: 'rgb(200, 180, 213)',
   },
   {
@@ -59,7 +55,7 @@ export const HOW_IT_WORKS_STEPS = [
     number: '3',
     title: 'Open a PR',
     description:
-      "After reading everything on the internet, it's time to open your PR. This is the golden moment where you discover 100 ways git can make you cry!",
+      "After reading everything on internet ever written and those to be written in future, it's the time to open your pr. This will be the golden moment, where you will discover another 100 ways git could make you cry!",
     color: 'rgb(200, 180, 213)',
   },
   {
@@ -67,44 +63,7 @@ export const HOW_IT_WORKS_STEPS = [
     number: '4',
     title: 'Leaderboard',
     description:
-      "After a sleepless night waiting for your PR to merge, climb the leaderboard and enjoy the short-lived 'I love programming' feeling!",
+      'After spending another sleepless night to see your pr getting merged it\'s the time to climb up the leaderboard and enjoy that shortliving "I love Programming" feeling!',
     color: 'rgb(200, 180, 213)',
   },
 ];
-
-// Animation Variants
-export const FADE_UP_VARIANTS = {
-  hidden: { opacity: 0, y: 50 },
-  visible: {
-    opacity: 1,
-    y: 0,
-    transition: { duration: 0.6, ease: 'easeOut' },
-  },
-};
-
-export const FADE_IN_VARIANTS = {
-  hidden: { opacity: 0 },
-  visible: {
-    opacity: 1,
-    transition: { duration: 0.5 },
-  },
-};
-
-export const STAGGER_CONTAINER = {
-  hidden: { opacity: 0 },
-  visible: {
-    opacity: 1,
-    transition: {
-      staggerChildren: 0.1,
-    },
-  },
-};
-
-// Responsive Breakpoints
-export const BREAKPOINTS = {
-  sm: 640,
-  md: 768,
-  lg: 1024,
-  xl: 1280,
-  '2xl': 1536,
-};

@@ -1,8 +1,8 @@
 'use client';
 import { motion } from 'framer-motion';
-import { useEffect, useRef } from 'react';
+import { memo, useEffect, useRef } from 'react';
 
-export default function ActiveBackground() {
+const ActiveBackground = memo(() => {
   const canvasRef = useRef(null);
   const rafRef = useRef(null);
   const resizeTimeout = useRef(null);
@@ -10,30 +10,28 @@ export default function ActiveBackground() {
   useEffect(() => {
     const canvas = canvasRef.current;
     if (!canvas) return;
-    const ctx = canvas.getContext('2d', { alpha: true });
+
+    const ctx = canvas.getContext('2d', { alpha: true, desynchronized: true });
     let width = 0;
     let height = 0;
-    let dpr = Math.max(1, window.devicePixelRatio || 1);
+    let dpr = Math.min(2, window.devicePixelRatio || 1); // Cap DPR for performance
 
-    // Config
     const CONFIG = {
-      STAR_DENSITY: 1 / 4500,
-      NUM_NEBULA_LAYERS: 3,
-      MAX_SHOOTING: 4,
+      STAR_DENSITY: 1 / 5000,
+      NUM_NEBULA_LAYERS: 2,
+      MAX_SHOOTING: 3,
       PLANETS: [
-        { r: 120, x: 0.15, y: 0.7, speed: 0.02, color: '#9b6bff' },
-        { r: 70, x: 0.8, y: 0.25, speed: -0.015, color: '#ff9fb8' },
+        { r: 100, x: 0.15, y: 0.7, speed: 0.015, color: '#9B87FE' },
+        { r: 60, x: 0.82, y: 0.28, speed: -0.012, color: '#FF9FB8' },
       ],
     };
 
-    // Pools
     let stars = [];
     let shootingStars = [];
     let nebulaLayers = [];
 
-    // Offscreen star sprite for fast draw
     const starSprite = document.createElement('canvas');
-    const spriteSize = 12 * dpr;
+    const spriteSize = 10 * dpr;
     starSprite.width = spriteSize;
     starSprite.height = spriteSize;
     const sctx = starSprite.getContext('2d');
@@ -49,8 +47,8 @@ export default function ActiveBackground() {
         spriteSize / 2
       );
       g.addColorStop(0, 'rgba(255,255,255,1)');
-      g.addColorStop(0.2, 'rgba(255,255,255,0.8)');
-      g.addColorStop(0.5, 'rgba(200,200,255,0.25)');
+      g.addColorStop(0.3, 'rgba(255,255,255,0.7)');
+      g.addColorStop(0.6, 'rgba(200,200,255,0.2)');
       g.addColorStop(1, 'rgba(0,0,0,0)');
       sctx.fillStyle = g;
       sctx.beginPath();
@@ -61,7 +59,7 @@ export default function ActiveBackground() {
     const rand = (a, b) => Math.random() * (b - a) + a;
 
     const init = () => {
-      dpr = Math.max(1, window.devicePixelRatio || 1);
+      dpr = Math.min(2, window.devicePixelRatio || 1);
       width = Math.floor(window.innerWidth);
       height = Math.floor(window.innerHeight);
 
@@ -78,12 +76,12 @@ export default function ActiveBackground() {
       stars = new Array(targetStars).fill(0).map(() => ({
         x: Math.random() * width,
         y: Math.random() * height,
-        size: rand(0.3, 1.8),
-        speed: rand(0.02, 0.5),
+        size: rand(0.4, 1.5),
+        speed: rand(0.03, 0.4),
         twinkle: Math.random() * Math.PI * 2,
         layer:
-          Math.random() > 0.85 ? 'near' : Math.random() > 0.6 ? 'mid' : 'far',
-        opacity: rand(0.4, 1),
+          Math.random() > 0.8 ? 'near' : Math.random() > 0.5 ? 'mid' : 'far',
+        opacity: rand(0.5, 1),
       }));
 
       shootingStars = new Array(CONFIG.MAX_SHOOTING).fill(0).map(() => ({
@@ -93,23 +91,21 @@ export default function ActiveBackground() {
         vx: 0,
         vy: 0,
         length: 0,
-        speed: 0,
+        size: 0,
         createdAt: 0,
-        waitUntil: Date.now() + rand(500, 4000),
+        waitUntil: Date.now() + rand(1000, 5000),
       }));
 
-      // MINIMAL glowing fog nebula blobs
       nebulaLayers = new Array(CONFIG.NUM_NEBULA_LAYERS).fill(0).map(() => ({
-        cx: width * rand(0.1, 0.9),
-        cy: height * rand(0.1, 0.9),
-        r: rand(width * 0.2, width * 0.45),
-        hue: rand(190, 280),
-        alpha: rand(0.04, 0.08),
-        drift: rand(0.0003, 0.0008),
+        cx: width * rand(0.2, 0.8),
+        cy: height * rand(0.2, 0.8),
+        r: rand(width * 0.25, width * 0.4),
+        hue: rand(220, 280),
+        alpha: rand(0.05, 0.1),
+        drift: rand(0.0005, 0.001),
       }));
     };
 
-    // Minimal soft fog nebula
     const drawNebula = (layer, t) => {
       ctx.save();
       ctx.globalCompositeOperation = 'lighter';
@@ -117,43 +113,43 @@ export default function ActiveBackground() {
       const { cx, cy, r, hue, alpha, drift } = layer;
 
       const g = ctx.createRadialGradient(cx, cy, 0, cx, cy, r);
-      g.addColorStop(0, `hsla(${hue}, 80%, 70%, ${alpha})`);
-      g.addColorStop(1, `hsla(${hue}, 80%, 40%, 0)`);
+      g.addColorStop(0, `hsla(${hue}, 70%, 60%, ${alpha})`);
+      g.addColorStop(1, `hsla(${hue}, 70%, 40%, 0)`);
 
       ctx.fillStyle = g;
       ctx.beginPath();
       ctx.arc(cx, cy, r, 0, Math.PI * 2);
       ctx.fill();
 
-      // Smooth drifting motion
-      layer.cx += Math.sin(t * drift) * 0.2;
-      layer.cy += Math.cos(t * drift) * 0.2;
+      layer.cx += Math.sin(t * drift) * 0.15;
+      layer.cy += Math.cos(t * drift) * 0.15;
 
       ctx.restore();
     };
 
     const trySpawnShootingStar = (s) => {
-      if (s.active) return;
-      if (Date.now() > s.waitUntil && Math.random() < 0.02) {
-        s.active = true;
-        s.x = rand(width * 0.2, width * 1.1);
-        s.y = rand(-50, height * 0.3);
-        const angle = rand(0.25, 0.7);
-        const speed = rand(8, 18);
-        s.vx = -Math.cos(angle) * speed;
-        s.vy = Math.sin(angle) * speed;
-        s.length = rand(60, 220);
-        s.size = rand(0.6, 2.4);
-        s.createdAt = Date.now();
-      }
+      if (s.active || Date.now() <= s.waitUntil || Math.random() > 0.015)
+        return;
+
+      s.active = true;
+      s.x = rand(width * 0.3, width * 1.2);
+      s.y = rand(-50, height * 0.2);
+      const angle = rand(0.3, 0.6);
+      const speed = rand(10, 16);
+      s.vx = -Math.cos(angle) * speed;
+      s.vy = Math.sin(angle) * speed;
+      s.length = rand(80, 200);
+      s.size = rand(0.8, 2);
+      s.createdAt = Date.now();
     };
 
     const drawPlanets = (t) => {
       ctx.save();
       ctx.globalCompositeOperation = 'source-over';
+
       for (let p of CONFIG.PLANETS) {
-        const px = (p.x * width + Math.sin(t * p.speed) * 40) | 0;
-        const py = (p.y * height + Math.cos(t * p.speed) * 20) | 0;
+        const px = (p.x * width + Math.sin(t * p.speed) * 30) | 0;
+        const py = (p.y * height + Math.cos(t * p.speed) * 15) | 0;
 
         const gradient = ctx.createRadialGradient(
           px - p.r / 3,
@@ -163,8 +159,8 @@ export default function ActiveBackground() {
           py,
           p.r
         );
-        gradient.addColorStop(0, 'rgba(255,255,255,0.9)');
-        gradient.addColorStop(0.25, `${p.color}`);
+        gradient.addColorStop(0, 'rgba(255,255,255,0.85)');
+        gradient.addColorStop(0.3, p.color);
         gradient.addColorStop(1, 'rgba(0,0,0,0)');
         ctx.fillStyle = gradient;
 
@@ -173,15 +169,15 @@ export default function ActiveBackground() {
         ctx.fill();
 
         ctx.globalCompositeOperation = 'lighter';
-        ctx.strokeStyle = 'rgba(255,255,255,0.06)';
-        ctx.lineWidth = Math.max(1, p.r * 0.08);
+        ctx.strokeStyle = 'rgba(255,255,255,0.08)';
+        ctx.lineWidth = Math.max(1, p.r * 0.06);
         ctx.beginPath();
         ctx.ellipse(
           px,
-          py + p.r * 0.25,
-          p.r * 1.4,
-          p.r * 0.5,
-          t * p.speed * 0.2,
+          py + p.r * 0.2,
+          p.r * 1.3,
+          p.r * 0.4,
+          t * p.speed * 0.15,
           0,
           Math.PI * 2
         );
@@ -195,15 +191,15 @@ export default function ActiveBackground() {
     const drawStars = (t) => {
       for (let s of stars) {
         let speedFactor =
-          s.layer === 'near' ? 0.6 : s.layer === 'mid' ? 0.3 : 0.12;
+          s.layer === 'near' ? 0.5 : s.layer === 'mid' ? 0.25 : 0.1;
 
         s.y -= s.speed * speedFactor;
         if (s.y < -10) s.y = height + 10;
 
-        s.twinkle += 0.02 + s.size * 0.005;
-        const alpha = s.opacity * (0.6 + Math.abs(Math.sin(s.twinkle)) * 0.8);
+        s.twinkle += 0.015 + s.size * 0.003;
+        const alpha = s.opacity * (0.6 + Math.abs(Math.sin(s.twinkle)) * 0.4);
 
-        const size = Math.max(0.5, s.size * (dpr * 0.8));
+        const size = Math.max(0.4, s.size * (dpr * 0.6));
 
         ctx.globalAlpha = alpha;
         ctx.drawImage(
@@ -224,21 +220,22 @@ export default function ActiveBackground() {
     const drawShooting = () => {
       ctx.save();
       ctx.globalCompositeOperation = 'lighter';
+
       for (let s of shootingStars) {
         if (!s.active) continue;
 
-        const steps = 18;
+        const steps = 15;
         for (let i = 0; i < steps; i++) {
           const t = i / steps;
-          const tx = s.x - s.vx * t * 0.6;
-          const ty = s.y - s.vy * t * 0.6;
+          const tx = s.x - s.vx * t * 0.5;
+          const ty = s.y - s.vy * t * 0.5;
 
-          ctx.globalAlpha = (1 - t) * 0.9;
+          ctx.globalAlpha = (1 - t) * 0.8;
           ctx.beginPath();
           ctx.arc(
             tx,
             ty,
-            Math.max(0.2, s.size * (1 - t) * 1.6),
+            Math.max(0.2, s.size * (1 - t) * 1.4),
             0,
             Math.PI * 2
           );
@@ -248,7 +245,7 @@ export default function ActiveBackground() {
 
         ctx.globalAlpha = 1;
         ctx.beginPath();
-        ctx.arc(s.x, s.y, Math.max(1.2, s.size * 1.8), 0, Math.PI * 2);
+        ctx.arc(s.x, s.y, Math.max(1, s.size * 1.6), 0, Math.PI * 2);
         ctx.fillStyle = 'white';
         ctx.fill();
 
@@ -257,13 +254,14 @@ export default function ActiveBackground() {
 
         if (s.x < -100 || s.y > height + 100) {
           s.active = false;
-          s.waitUntil = Date.now() + rand(800, 5000);
+          s.waitUntil = Date.now() + rand(1000, 6000);
         }
       }
       ctx.restore();
     };
 
     const start = performance.now();
+
     const render = (now) => {
       const t = (now - start) / 1000;
 
@@ -271,9 +269,7 @@ export default function ActiveBackground() {
       ctx.fillStyle = '#071228';
       ctx.fillRect(0, 0, width, height);
 
-      // minimal nebula fog
       for (let L of nebulaLayers) drawNebula(L, t);
-
       drawPlanets(t);
       drawStars(t);
 
@@ -287,7 +283,7 @@ export default function ActiveBackground() {
 
     const onResize = () => {
       clearTimeout(resizeTimeout.current);
-      resizeTimeout.current = setTimeout(() => init(), 120);
+      resizeTimeout.current = setTimeout(() => init(), 150);
     };
 
     init();
@@ -303,32 +299,49 @@ export default function ActiveBackground() {
 
   return (
     <div className="fixed inset-0 z-[-1] overflow-hidden bg-[#0B1843] pointer-events-none">
+      {/* Animated gradient orbs */}
       <motion.div
         aria-hidden
-        animate={{ scale: [1, 1.15, 1], opacity: [0.25, 0.45, 0.25] }}
-        transition={{ duration: 14, repeat: Infinity, ease: 'linear' }}
-        className="absolute top-[-12%] left-[-12%] w-[52vw] h-[52vw]
-        bg-gradient-to-tr from-[#9b87fe]/30 via-[#5eead4]/20 to-[#893193]/20
-        rounded-full blur-[160px] opacity-60"
+        animate={{
+          scale: [1, 1.2, 1],
+          opacity: [0.2, 0.35, 0.2],
+          x: [0, 50, 0],
+          y: [0, -30, 0],
+        }}
+        transition={{ duration: 15, repeat: Infinity, ease: 'easeInOut' }}
+        className="absolute top-[-10%] left-[-10%] w-[50vw] h-[50vw] bg-gradient-to-tr from-[#9B87FE]/25 via-[#5eead4]/15 to-[#893193]/20 rounded-full blur-[140px]"
       />
 
       <motion.div
         aria-hidden
-        animate={{ scale: [1, 1.3, 1], opacity: [0.18, 0.35, 0.18] }}
-        transition={{
-          duration: 20,
-          repeat: Infinity,
-          ease: 'linear',
-          delay: 2,
+        animate={{
+          scale: [1, 1.3, 1],
+          opacity: [0.15, 0.3, 0.15],
+          x: [0, -40, 0],
+          y: [0, 40, 0],
         }}
-        className="absolute bottom-[-8%] right-[-8%] w-[62vw] h-[62vw]
-        bg-gradient-to-br from-[#893193]/25 via-[#ff9fb8]/10 to-[#9b87fe]/10
-        rounded-full blur-[200px] opacity-50"
+        transition={{
+          duration: 18,
+          repeat: Infinity,
+          ease: 'easeInOut',
+          delay: 1.5,
+        }}
+        className="absolute bottom-[-8%] right-[-8%] w-[55vw] h-[55vw] bg-gradient-to-br from-[#893193]/20 via-[#FF9FB8]/8 to-[#9B87FE]/12 rounded-full blur-[180px]"
       />
 
       <canvas ref={canvasRef} className="absolute inset-0 w-full h-full" />
 
-      <div className="absolute inset-0 opacity-[0.02] bg-[url('https://grainy-gradients.vercel.app/noise.svg')] mix-blend-overlay" />
+      {/* Subtle noise texture */}
+      <div
+        className="absolute inset-0 opacity-[0.02] mix-blend-overlay"
+        style={{
+          backgroundImage:
+            "url(\"data:image/svg+xml,%3Csvg viewBox='0 0 200 200' xmlns='http://www.w3.org/2000/svg'%3E%3Cfilter id='noiseFilter'%3E%3CfeTurbulence type='fractalNoise' baseFrequency='0.9' numOctaves='3' stitchTiles='stitch'/%3E%3C/filter%3E%3Crect width='100%25' height='100%25' filter='url(%23noiseFilter)'/%3E%3C/svg%3E\")",
+        }}
+      />
     </div>
   );
-}
+});
+
+ActiveBackground.displayName = 'ActiveBackground';
+export default ActiveBackground;
