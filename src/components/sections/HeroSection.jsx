@@ -1,5 +1,5 @@
 'use client';
-import { Button } from '@/components/ui/button';
+import { Button } from '@/components/ui/Button';
 import { EXTERNAL_LINKS, IMAGE_PATHS } from '@/lib/constants';
 import { motion, useScroll, useTransform } from 'framer-motion';
 import { Sparkles } from 'lucide-react';
