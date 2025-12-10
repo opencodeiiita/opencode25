@@ -1,15 +1,8 @@
 'use client';
-import { Button } from '@/components/ui/Button';
+import DownloadBrochureButton from '@/components/ui/DownloadBrochureButton';
 import { IMAGE_PATHS, SOCIAL_LINKS } from '@/lib/constants';
 import { motion } from 'framer-motion';
-import {
-  ArrowUp,
-  Download,
-  Facebook,
-  Instagram,
-  Mail,
-  Twitter,
-} from 'lucide-react';
+import { ArrowUp, Facebook, Instagram, Mail, Twitter } from 'lucide-react';
 import Image from 'next/image';
 
 const SocialIcon = ({ href, Icon, delay, label }) => (
@@ -36,15 +29,6 @@ const SocialIcon = ({ href, Icon, delay, label }) => (
 
 export default function Footer() {
   const scrollToTop = () => window.scrollTo({ top: 0, behavior: 'smooth' });
-
-  const downloadBrochure = () => {
-    const link = document.createElement('a');
-    link.href = '/brochure.pdf';
-    link.download = 'OpenCode-Brochure.pdf';
-    document.body.appendChild(link);
-    link.click();
-    document.body.removeChild(link);
-  };
 
   return (
     <footer className="relative border-t border-white/10 pt-20 pb-10 overflow-hidden bg-gradient-to-b from-transparent to-[#0B1843]/50">
@@ -88,15 +72,7 @@ export default function Footer() {
               viewport={{ once: true }}
               transition={{ delay: 0.2 }}
             >
-              <Button
-                variant="outline"
-                size="default"
-                onClick={downloadBrochure}
-                className="group"
-              >
-                <Download className="w-4 h-4 transition-transform group-hover:translate-y-0.5" />
-                Download Brochure
-              </Button>
+              <DownloadBrochureButton variant="outline" size="default" />
             </motion.div>
           </motion.div>
 

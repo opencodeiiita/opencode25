@@ -1,5 +1,6 @@
 'use client';
-import { Button } from '@/components/ui/Button';
+import DownloadBrochureButton from '@/components/ui/DownloadBrochureButton';
+import { Button } from '@/components/ui/button';
 import { EXTERNAL_LINKS, IMAGE_PATHS } from '@/lib/constants';
 import { motion, useScroll, useTransform } from 'framer-motion';
 import { Sparkles } from 'lucide-react';
@@ -54,28 +55,38 @@ export default function HeroSection() {
               to learn.
             </p>
 
-            <div className="flex flex-col sm:flex-row gap-4">
-              <Button
-                size="lg"
-                className="group"
-                onClick={() => window.open(EXTERNAL_LINKS.unstop, '_blank')}
-              >
-                Join Unstop
-                <motion.span
-                  className="ml-2"
-                  animate={{ x: [0, 5, 0] }}
-                  transition={{ duration: 1.5, repeat: Infinity }}
+            <div className="grid grid-cols-1 sm:grid-cols-2 gap-3 max-w-md">
+              <div className="sm:col-span-2">
+                <Button
+                  size="default"
+                  className="group w-full"
+                  onClick={() => window.open(EXTERNAL_LINKS.unstop, '_blank')}
                 >
-                  →
-                </motion.span>
-              </Button>
+                  Join Unstop
+                  <motion.span
+                    className="ml-2"
+                    animate={{ x: [0, 5, 0] }}
+                    transition={{ duration: 1.5, repeat: Infinity }}
+                  >
+                    →
+                  </motion.span>
+                </Button>
+              </div>
+
               <Button
                 variant="outline"
-                size="lg"
+                size="default"
+                className="w-full"
                 onClick={() => window.open(EXTERNAL_LINKS.githubOrg, '_blank')}
               >
                 View Projects
               </Button>
+
+              <DownloadBrochureButton
+                variant="outline"
+                size="default"
+                className="w-full"
+              />
             </div>
 
             <motion.div
