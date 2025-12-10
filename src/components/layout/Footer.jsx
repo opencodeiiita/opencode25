@@ -1,8 +1,7 @@
 'use client';
-import DownloadBrochureButton from '@/components/ui/DownloadBrochureButton';
 import { IMAGE_PATHS, SOCIAL_LINKS } from '@/lib/constants';
 import { motion } from 'framer-motion';
-import { ArrowUp, Facebook, Instagram, Mail, Twitter } from 'lucide-react';
+import { ArrowUp, Mail, } from 'lucide-react';
 import Image from 'next/image';
 
 const SocialIcon = ({ href, Icon, delay, label }) => (
