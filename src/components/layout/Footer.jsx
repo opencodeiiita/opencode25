@@ -1,7 +1,7 @@
 'use client';
 import { IMAGE_PATHS, SOCIAL_LINKS } from '@/lib/constants';
 import { motion } from 'framer-motion';
-import { ArrowUp, Mail, } from 'lucide-react';
+import { ArrowUp, Mail,Twitter, Facebook,Instagram } from 'lucide-react';
 import Image from 'next/image';
 
 const SocialIcon = ({ href, Icon, delay, label }) => (
