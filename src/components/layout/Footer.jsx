@@ -1,7 +1,7 @@
 'use client';
 import { IMAGE_PATHS, SOCIAL_LINKS } from '@/lib/constants';
 import { motion } from 'framer-motion';
-import { ArrowUp, Mail, } from 'lucide-react';
+import { ArrowUp, Mail,Twitter, Instagram ,Facebook} from 'lucide-react';
 import Image from 'next/image';
 
 const SocialIcon = ({ href, Icon, delay, label }) => (
@@ -65,14 +65,7 @@ export default function Footer() {
                 Empowering students through collaborative coding
               </p>
             </div>
-            <motion.div
-              initial={{ opacity: 0, y: 10 }}
-              whileInView={{ opacity: 1, y: 0 }}
-              viewport={{ once: true }}
-              transition={{ delay: 0.2 }}
-            >
-              <DownloadBrochureButton variant="outline" size="default" />
-            </motion.div>
+            
           </motion.div>
 
           <div className="flex flex-col gap-6 md:items-end">
