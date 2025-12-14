@@ -25,7 +25,7 @@ export default function HeroSection() {
               aria-hidden={false}
             >
               <a
-                href="https://ethindia.org"
+                href="https://ethindia.co"
                 target="_blank"
                 rel="noopener noreferrer"
                 aria-label="ETHIndia"
