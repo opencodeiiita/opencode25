@@ -18,6 +18,8 @@ const Button = React.forwardRef(
     const variants = {
       default:
         'bg-gradient-to-r from-[#9B87FE] to-[#8A76ED] text-black hover:shadow-lg hover:shadow-[#9B87FE]/50 active:scale-95',
+      devfolio:
+        'bg-[#3770FF] text-white hover:bg-[#2f63e0] active:scale-95 shadow-lg shadow-[#3770FF]/40 border border-white/5',
       outline:
         'border-2 border-[#9B87FE] text-white hover:bg-[#9B87FE]/10 hover:border-[#8A76ED]',
       ghost: 'hover:bg-white/10 text-white',

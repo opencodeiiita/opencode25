@@ -18,50 +18,47 @@ export default function HeroSection() {
       className="relative min-h-screen flex items-center pt-32 pb-20 overflow-hidden"
     >
       <div className="container-custom relative z-10">
-        <div
-          className="absolute top-0 right-5 hidden md:flex items-center gap-3 z-30"
-          style={{
-            background: 'rgba(255,255,255,0.04)',
-            border: '1px solid rgba(255,255,255,0.06)',
-            padding: '6px 10px',
-            borderRadius: 9999,
-            backdropFilter: 'blur(6px)'
-          }}
-          aria-hidden={false}
-        >
-          <a
-            href="https://ethindia.org"
-            target="_blank"
-            rel="noopener noreferrer"
-            aria-label="ETHIndia"
-            className="block p-1 rounded-md hover:scale-105 transition-transform duration-200"
-          >
-            <Image
-              src="/images/ethindia-light.png"
-              alt="ETHIndia"
-              width={120}
-              height={30}
-              className="object-contain"
-            />
-          </a>
+        <div className="absolute -top-6 left-0 right-0 hidden md:block z-30">
+          <div className="container-custom flex justify-end">
+            <div
+              className="flex items-center gap-3 rounded-full border border-white/10 bg-white/5 px-3 py-2 backdrop-blur-md shadow-lg shadow-black/10"
+              aria-hidden={false}
+            >
+              <a
+                href="https://ethindia.org"
+                target="_blank"
+                rel="noopener noreferrer"
+                aria-label="ETHIndia"
+                className="block p-1 rounded-md hover:scale-105 transition-transform duration-200"
+              >
+                <Image
+                  src="/images/ethindia-light.png"
+                  alt="ETHINDIA LOGO"
+                  width={120}
+                  height={30}
+                  className="object-contain"
+                />
+              </a>
 
-          <div className="w-px h-6 bg-white/10" aria-hidden="true" />
+              <div className="w-px h-6 bg-white/10" aria-hidden="true" />
 
-          <a
-            href="https://devfolio.co"
-            target="_blank"
-            rel="noopener noreferrer"
-            aria-label="Devfolio"
-            className="block p-1 rounded-md hover:scale-105 transition-transform duration-200"
-          >
-            <Image
-              src="/images/Devfolio_Logo-White.png"
-              alt="Devfolio"
-              width={120}
-              height={26}
-              className="object-contain"
-            />
-          </a>
+              <a
+                href="https://devfolio.co"
+                target="_blank"
+                rel="noopener noreferrer"
+                aria-label="Devfolio"
+                className="block p-1 rounded-md hover:scale-105 transition-transform duration-200"
+              >
+                <Image
+                  src="/images/Devfolio_Logo-White.png"
+                  alt="DEVFOLIO LOGO"
+                  width={120}
+                  height={26}
+                  className="object-contain"
+                />
+              </a>
+            </div>
+          </div>
         </div>
 
         <div className="grid grid-cols-1 lg:grid-cols-2 gap-16 items-center">
@@ -104,18 +101,19 @@ export default function HeroSection() {
             <div className="grid grid-cols-1 sm:grid-cols-2 gap-3 max-w-md">
               <div className="sm:col-span-2">
                 <Button
+                  variant="devfolio"
                   size="default"
-                  className="group w-full"
+                  className="group w-full font-semibold gap-1.5"
                   onClick={() => window.open(EXTERNAL_LINKS.devfolio, '_blank')}
                 >
+                  <Image
+                    src="/images/devwhite-removebg-preview.png"
+                    alt="DEVFOLIO LOGO"
+                    width={44}
+                    height={44}
+                    className="object-contain"
+                  />
                   Apply with Devfolio
-                  <motion.span
-                    className="ml-2"
-                    animate={{ x: [0, 5, 0] }}
-                    transition={{ duration: 1.5, repeat: Infinity }}
-                  >
-                    →
-                  </motion.span>
                 </Button>
               </div>
 
