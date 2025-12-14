@@ -16,6 +16,8 @@ export const EXTERNAL_LINKS = {
   discord: 'https://discord.gg/PX7uJCSXPw',
   codeOfConduct:
     'https://drive.google.com/file/d/1LQJai-gcyf6AvzlW06aw7WJ8qZUpwN4P/view?usp=sharing',
+    devfolio:
+    'https://opencode25.devfolio.co/'
 };
 
 export const SOCIAL_LINKS = {

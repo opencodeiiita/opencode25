@@ -18,6 +18,52 @@ export default function HeroSection() {
       className="relative min-h-screen flex items-center pt-32 pb-20 overflow-hidden"
     >
       <div className="container-custom relative z-10">
+        <div
+          className="absolute top-6 right-6 hidden md:flex items-center gap-3 z-30"
+          style={{
+            background: 'rgba(255,255,255,0.04)',
+            border: '1px solid rgba(255,255,255,0.06)',
+            padding: '6px 10px',
+            borderRadius: 9999,
+            backdropFilter: 'blur(6px)'
+          }}
+          aria-hidden={false}
+        >
+          <a
+            href="https://ethindia.org"
+            target="_blank"
+            rel="noopener noreferrer"
+            aria-label="ETHIndia"
+            className="block p-1 rounded-md hover:scale-105 transition-transform duration-200"
+          >
+            <Image
+              src="/images/ethindia-light.png"
+              alt="ETHIndia"
+              width={120}
+              height={30}
+              className="object-contain"
+            />
+          </a>
+
+          <div className="w-px h-6 bg-white/10" aria-hidden="true" />
+
+          <a
+            href="https://devfolio.co"
+            target="_blank"
+            rel="noopener noreferrer"
+            aria-label="Devfolio"
+            className="block p-1 rounded-md hover:scale-105 transition-transform duration-200"
+          >
+            <Image
+              src="/images/Devfolio_Logo-White.png"
+              alt="Devfolio"
+              width={120}
+              height={26}
+              className="object-contain"
+            />
+          </a>
+        </div>
+
         <div className="grid grid-cols-1 lg:grid-cols-2 gap-16 items-center">
           <motion.div
             style={{ y: yText, opacity }}
@@ -33,7 +79,7 @@ export default function HeroSection() {
             >
               <Sparkles className="w-4 h-4 text-[#9B87FE]" />
               <span className="text-sm font-semibold text-[#9B87FE] tracking-wide">
-                Registration Open Now
+                Apply with Devfolio
               </span>
             </motion.div>
 
@@ -60,9 +106,9 @@ export default function HeroSection() {
                 <Button
                   size="default"
                   className="group w-full"
-                  onClick={() => window.open(EXTERNAL_LINKS.unstop, '_blank')}
+                  onClick={() => window.open(EXTERNAL_LINKS.devfolio, '_blank')}
                 >
-                  Join Unstop
+                  Apply with Devfolio
                   <motion.span
                     className="ml-2"
                     animate={{ x: [0, 5, 0] }}
@@ -88,6 +134,8 @@ export default function HeroSection() {
                 className="w-full"
               />
             </div>
+
+            
 
             <motion.div
               className="flex gap-8 mt-12 pt-8 border-t border-white/10"
