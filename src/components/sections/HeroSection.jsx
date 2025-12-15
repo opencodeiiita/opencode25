@@ -5,12 +5,61 @@ import { EXTERNAL_LINKS, IMAGE_PATHS } from '@/lib/constants';
 import { motion, useScroll, useTransform } from 'framer-motion';
 import { Sparkles } from 'lucide-react';
 import Image from 'next/image';
+import { useEffect, useRef, useState } from 'react';
 
 export default function HeroSection() {
   const { scrollY } = useScroll();
   const yText = useTransform(scrollY, [0, 500], [0, 150]);
   const yImg = useTransform(scrollY, [0, 500], [0, -80]);
   const opacity = useTransform(scrollY, [0, 300], [1, 0]);
+  const devfolioContainerRef = useRef(null);
+  const [devfolioButtonVisible, setDevfolioButtonVisible] = useState(false);
+
+  // Load Devfolio apply button SDK on this page
+  useEffect(() => {
+    const existing = document.querySelector(
+      'script[src="https://apply.devfolio.co/v2/sdk.js"]'
+    );
+    const script = existing || document.createElement('script');
+    script.src = 'https://apply.devfolio.co/v2/sdk.js';
+    script.async = true;
+    script.defer = true;
+
+    if (!existing) {
+      document.body.appendChild(script);
+    }
+
+    return () => {
+      if (!existing && script.parentNode) {
+        script.parentNode.removeChild(script);
+      }
+    };
+  }, []);
+
+  // Detect when Devfolio widget renders and fall back to native button if it doesn't
+  useEffect(() => {
+    if (!devfolioContainerRef.current) return undefined;
+
+    const target = devfolioContainerRef.current;
+    const observer = new MutationObserver(() => {
+      if (target.childElementCount > 0) {
+        setDevfolioButtonVisible(true);
+      }
+    });
+
+    observer.observe(target, { childList: true });
+
+    const timeout = setTimeout(() => {
+      if (target.childElementCount > 0) {
+        setDevfolioButtonVisible(true);
+      }
+    }, 2000);
+
+    return () => {
+      observer.disconnect();
+      clearTimeout(timeout);
+    };
+  }, []);
 
   return (
     <section
@@ -100,21 +149,28 @@ export default function HeroSection() {
 
             <div className="grid grid-cols-1 sm:grid-cols-2 gap-3 max-w-md">
               <div className="sm:col-span-2">
-                <Button
-                  variant="devfolio"
-                  size="default"
-                  className="group w-full font-semibold gap-1.5"
-                  onClick={() => window.open(EXTERNAL_LINKS.devfolio, '_blank')}
-                >
-                  <Image
-                    src="/images/devwhite-removebg-preview.png"
-                    alt="DEVFOLIO LOGO"
-                    width={44}
-                    height={44}
-                    className="object-contain"
+                <div className="w-full flex justify-center">
+                  <div
+                    ref={devfolioContainerRef}
+                    className="apply-button"
+                    data-hackathon-slug="opencode25"
+                    data-button-theme="dark"
+                    style={{ height: '44px', width: '312px' }}
+                    aria-label="Apply with Devfolio"
                   />
-                  Apply with Devfolio
-                </Button>
+                  {!devfolioButtonVisible && (
+                    <Button
+                      variant="devfolio"
+                      size="default"
+                      className="absolute w-[312px] h-[44px] font-semibold gap-1.5"
+                      onClick={() =>
+                        window.open(EXTERNAL_LINKS.devfolio, '_blank')
+                      }
+                    >
+                      Apply with Devfolio
+                    </Button>
+                  )}
+                </div>
               </div>
 
               <Button
