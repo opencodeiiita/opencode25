@@ -68,7 +68,7 @@ export default function HeroSection() {
     >
       <div className="container-custom relative z-10">
         <div
-          className="absolute top-0 right-5 hidden md:flex items-center gap-3 z-30"
+          className="absolute top-0 right-14 hidden md:flex items-center gap-3 z-30"
           style={{
             background: 'rgba(255,255,255,0.04)',
             border: '1px solid rgba(255,255,255,0.06)',
@@ -94,23 +94,6 @@ export default function HeroSection() {
             />
           </a>
 
-          <div className="w-px h-6 bg-white/10" aria-hidden="true" />
-
-          <a
-            href="https://devfolio.co"
-            target="_blank"
-            rel="noopener noreferrer"
-            aria-label="Devfolio"
-            className="block p-1 rounded-md hover:scale-105 transition-transform duration-200"
-          >
-            <Image
-              src="/images/Devfolio_Logo-White.png"
-              alt="Devfolio"
-              width={120}
-              height={26}
-              className="object-contain"
-            />
-          </a>
         </div>
 
         <div className="grid grid-cols-1 lg:grid-cols-2 gap-16 items-center">
@@ -128,7 +111,7 @@ export default function HeroSection() {
             >
               <Sparkles className="w-4 h-4 text-[#9B87FE]" />
               <span className="text-sm font-semibold text-[#9B87FE] tracking-wide">
-                Apply with Devfolio
+                Apply with Unstop now!
               </span>
             </motion.div>
 
@@ -163,14 +146,14 @@ export default function HeroSection() {
                   />
                   {!devfolioButtonVisible && (
                     <Button
-                      variant="devfolio"
+                    
                       size="default"
                       className="absolute w-[312px] h-[44px] font-semibold gap-1.5"
                       onClick={() =>
-                        window.open(EXTERNAL_LINKS.devfolio, '_blank')
+                        window.open("https://unstop.com/p/opencode-2025-indian-institute-of-information-technology-iiit-allahabad-1611367", '_blank')
                       }
                     >
-                      Apply with Devfolio
+                      Join Unstop 
                     </Button>
                   )}
                 </div>
