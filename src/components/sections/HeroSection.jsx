@@ -68,7 +68,7 @@ export default function HeroSection() {
     >
       <div className="container-custom relative z-10">
         <div
-          className="absolute top-0 right-14 hidden md:flex items-center gap-3 z-30"
+          className="absolute top-0 right-7 hidden md:flex items-center gap-3 z-30"
           style={{
             background: 'rgba(255,255,255,0.04)',
             border: '1px solid rgba(255,255,255,0.06)',
