@@ -11,7 +11,7 @@ export default function DownloadBrochureButton({
   const downloadBrochure = () => {
     const link = document.createElement('a');
     link.href = '/Participant_Rulebook_Updated.pdf';
-    link.download = 'OpenCode-Brochure.pdf';
+    link.download = 'Participant_Rulebook_Updated.pdf';
     document.body.appendChild(link);
     link.click();
     document.body.removeChild(link);
