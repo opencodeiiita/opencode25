@@ -78,21 +78,7 @@ export default function HeroSection() {
           }}
           aria-hidden={false}
         >
-          <a
-            href="https://ethindia.org"
-            target="_blank"
-            rel="noopener noreferrer"
-            aria-label="ETHIndia"
-            className="block p-1 rounded-md hover:scale-105 transition-transform duration-200"
-          >
-            <Image
-              src="/images/ethindia-light.png"
-              alt="ETHIndia"
-              width={120}
-              height={30}
-              className="object-contain"
-            />
-          </a>
+          
 
         </div>
 
