@@ -30,7 +30,7 @@ export default function HeroSection() {
           aria-hidden={false}
         >
           <a
-            href="https://ethindia.org"
+            href="https://ethindia-villa.devfolio.co/overview"
             target="_blank"
             rel="noopener noreferrer"
             aria-label="ETHIndia"
@@ -45,7 +45,7 @@ export default function HeroSection() {
             />
           </a>
 
-          <div className="w-px h-6 bg-white/10" aria-hidden="true" />
+          {/* <div className="w-px h-6 bg-white/10" aria-hidden="true" />
 
           <a
             href="https://devfolio.co"
@@ -61,7 +61,7 @@ export default function HeroSection() {
               height={26}
               className="object-contain"
             />
-          </a>
+          </a> */}
         </div>
 
         <div className="grid grid-cols-1 lg:grid-cols-2 gap-16 items-center">
