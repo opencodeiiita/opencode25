@@ -10,7 +10,7 @@ export default function DownloadBrochureButton({
 }) {
   const downloadBrochure = () => {
     const link = document.createElement('a');
-    link.href = '/brochure.pdf';
+    link.href = '/Participant_Rulebook_Updated.pdf';
     link.download = 'OpenCode-Brochure.pdf';
     document.body.appendChild(link);
     link.click();
@@ -27,7 +27,7 @@ export default function DownloadBrochureButton({
       {showIcon && (
         <Download className="w-4 h-4 transition-transform group-hover:translate-y-0.5" />
       )}
-      Brochure
+       Rule Book
     </Button>
   );
 }
