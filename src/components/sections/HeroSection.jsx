@@ -5,12 +5,61 @@ import { EXTERNAL_LINKS, IMAGE_PATHS } from '@/lib/constants';
 import { motion, useScroll, useTransform } from 'framer-motion';
 import { Sparkles } from 'lucide-react';
 import Image from 'next/image';
+import { useEffect, useRef, useState } from 'react';
 
 export default function HeroSection() {
   const { scrollY } = useScroll();
   const yText = useTransform(scrollY, [0, 500], [0, 150]);
   const yImg = useTransform(scrollY, [0, 500], [0, -80]);
   const opacity = useTransform(scrollY, [0, 300], [1, 0]);
+  const devfolioContainerRef = useRef(null);
+  const [devfolioButtonVisible, setDevfolioButtonVisible] = useState(false);
+
+  // Load Devfolio apply button SDK on this page
+  useEffect(() => {
+    const existing = document.querySelector(
+      'script[src="https://apply.devfolio.co/v2/sdk.js"]'
+    );
+    const script = existing || document.createElement('script');
+    script.src = 'https://apply.devfolio.co/v2/sdk.js';
+    script.async = true;
+    script.defer = true;
+
+    if (!existing) {
+      document.body.appendChild(script);
+    }
+
+    return () => {
+      if (!existing && script.parentNode) {
+        script.parentNode.removeChild(script);
+      }
+    };
+  }, []);
+
+  // Detect when Devfolio widget renders and fall back to native button if it doesn't
+  useEffect(() => {
+    if (!devfolioContainerRef.current) return undefined;
+
+    const target = devfolioContainerRef.current;
+    const observer = new MutationObserver(() => {
+      if (target.childElementCount > 0) {
+        setDevfolioButtonVisible(true);
+      }
+    });
+
+    observer.observe(target, { childList: true });
+
+    const timeout = setTimeout(() => {
+      if (target.childElementCount > 0) {
+        setDevfolioButtonVisible(true);
+      }
+    }, 2000);
+
+    return () => {
+      observer.disconnect();
+      clearTimeout(timeout);
+    };
+  }, []);
 
   return (
     <section
@@ -30,7 +79,7 @@ export default function HeroSection() {
           aria-hidden={false}
         >
           <a
-            href="https://ethindia-villa.devfolio.co/overview"
+            href="https://ethindia.org"
             target="_blank"
             rel="noopener noreferrer"
             aria-label="ETHIndia"
@@ -45,7 +94,7 @@ export default function HeroSection() {
             />
           </a>
 
-          {/* <div className="w-px h-6 bg-white/10" aria-hidden="true" />
+          <div className="w-px h-6 bg-white/10" aria-hidden="true" />
 
           <a
             href="https://devfolio.co"
@@ -61,7 +110,7 @@ export default function HeroSection() {
               height={26}
               className="object-contain"
             />
-          </a> */}
+          </a>
         </div>
 
         <div className="grid grid-cols-1 lg:grid-cols-2 gap-16 items-center">
@@ -103,20 +152,28 @@ export default function HeroSection() {
 
             <div className="grid grid-cols-1 sm:grid-cols-2 gap-3 max-w-md">
               <div className="sm:col-span-2">
-                <Button
-                  size="default"
-                  className="group w-full"
-                  onClick={() => window.open(EXTERNAL_LINKS.devfolio, '_blank')}
-                >
-                  Apply with Devfolio
-                  <motion.span
-                    className="ml-2"
-                    animate={{ x: [0, 5, 0] }}
-                    transition={{ duration: 1.5, repeat: Infinity }}
-                  >
-                    →
-                  </motion.span>
-                </Button>
+                <div className="w-full flex justify-center">
+                  <div
+                    ref={devfolioContainerRef}
+                    className="apply-button"
+                    data-hackathon-slug="opencode25"
+                    data-button-theme="dark"
+                    style={{ height: '44px', width: '312px' }}
+                    aria-label="Apply with Devfolio"
+                  />
+                  {!devfolioButtonVisible && (
+                    <Button
+                      variant="devfolio"
+                      size="default"
+                      className="absolute w-[312px] h-[44px] font-semibold gap-1.5"
+                      onClick={() =>
+                        window.open(EXTERNAL_LINKS.devfolio, '_blank')
+                      }
+                    >
+                      Apply with Devfolio
+                    </Button>
+                  )}
+                </div>
               </div>
 
               <Button
