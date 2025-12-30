@@ -101,23 +101,24 @@ export default function HeroSection() {
               </span>
             </motion.div>
 
-            <h1 className="text-5xl md:text-6xl lg:text-7xl font-black mb-8 leading-[1.1] text-white">
-              Start your{' '}
-              <span className="inline-block bg-gradient-to-r from-[#9B87FE] via-[#FF9FB8] to-[#9B87FE] bg-clip-text text-transparent animate-gradient bg-[length:200%_auto]">
-                Open Source
-              </span>
-              <br />
-              Odyssey
-            </h1>
+           <h1 className="text-5xl md:text-6xl lg:text-7xl font-black mb-8 leading-[1.15] text-white">
+   Start your{' '}
+  <span className="inline-block bg-gradient-to-r from-[#9B87FE] via-[#FF9FB8] to-[#9B87FE] bg-clip-text text-transparent animate-gradient bg-[length:200%_auto] drop-shadow-sm">
+    Open Source
+  </span>
+  <br />
+  Odyssey
+</h1>
 
-            <p className="text-xl md:text-2xl text-gray-300 mb-10 max-w-lg leading-relaxed">
-              A month-long journey into software development. No experience
-              required—just an{' '}
-              <span className="text-[#9B87FE] font-semibold">
-                enthusiastic heart
-              </span>{' '}
-              to learn.
-            </p>
+<p className="text-xl md:text-2xl text-white/85 mb-10 max-w-lg leading-relaxed font-normal">
+  A month-long journey into software development. No experience
+  required—just an{' '}
+  <span className="text-[#E6E1FF] font-bold drop-shadow-[0_1px_2px_rgba(0,0,0,0.6)]">
+    enthusiastic heart
+  </span>{' '}
+  to learn.
+</p>
+
 
             <div className="grid grid-cols-1 sm:grid-cols-2 gap-3 max-w-md">
               <div className="sm:col-span-2">
